@@ -59,8 +59,9 @@ window.onload = function () {
     // 背景切换（每8秒）
     function changeBg() {
         img_index = (img_index % 10) + 1;
-        document.getElementById('background').style.backgroundImage = `url('images/${img_index}.png')`;
+        document.getElementById('background').style.backgroundImage = `url('${img_index}.png')`;
         setTimeout(changeBg, 8000);
     }
     changeBg();
 };
+
