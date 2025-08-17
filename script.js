@@ -29,9 +29,7 @@ var tips_array = [
         "SCP-049/049-2"
     ],
     tip_index = 0,
-    tip_interval = 10000,
-    img_index = 0,
-    img_interval = 8000;
+    img_index = 0;
 
 // 强制全屏（尝试）
 function forceFullscreen() {
