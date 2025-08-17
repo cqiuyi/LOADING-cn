@@ -33,21 +33,36 @@ var tips_array = [
     img_index = 0,
     img_interval = 8000;
 
-window.onload = function () {
-    window.onclick = changeTip;
-    changeTip();
-
-    function changeTip() {
-        tip_index = Math.floor(Math.random() * tips_array.length);
-        document.getElementById('hintText').innerHTML = `${tips_array[tip_index]}`;
-        document.getElementById('hintHeader').innerHTML = `${tips_headers[tip_index]}`;
-    };
-
-    changeBg();
-
-    function changeBg() {
-        img_index = Math.floor(Math.random() * 10) + 1;
-        document.getElementById('background').style.backgroundImage = `url('images/${img_index}.png')`;
-        setTimeout(changeBg, img_interval);
-    };
+// 强制全屏（尝试）
+function forceFullscreen() {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) elem.requestFullscreen().catch(err => console.log(err));
+    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+    else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 }
+
+window.onload = function () {
+    // 加载时尝试强制全屏
+    forceFullscreen();
+    
+    // 点击时切换提示 + 再次尝试全屏（绕过浏览器限制）
+    document.onclick = function() {
+        tip_index = (tip_index + 1) % tips_array.length;
+        document.getElementById('hintText').innerHTML = tips_array[tip_index];
+        document.getElementById('hintHeader').innerHTML = tips_headers[tip_index];
+        forceFullscreen(); // 每次点击都尝试全屏
+    };
+    
+    // 初始加载随机提示
+    tip_index = Math.floor(Math.random() * tips_array.length);
+    document.getElementById('hintText').innerHTML = tips_array[tip_index];
+    document.getElementById('hintHeader').innerHTML = tips_headers[tip_index];
+    
+    // 背景切换（每8秒）
+    function changeBg() {
+        img_index = (img_index % 10) + 1;
+        document.getElementById('background').style.backgroundImage = `url('${img_index}.png')`;
+        setTimeout(changeBg, 8000);
+    }
+    changeBg();
+};
